@@ -1,6 +1,8 @@
 package com.suhlob.hibernate;
 
 import com.suhlob.hibernate.entity.Student;
+import com.suhlob.hibernate.reports.ExamResult;
+import com.suhlob.hibernate.reports.Reports;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -17,13 +19,17 @@ public class App {
         Session session = sessionFactory.openSession();
 
         Transaction transaction = session.beginTransaction();
-        //session.save(new Student("John", "Snow", 21));
+        //session.save(new Student("John", "Smith", 33));
 
         //Student student=session.get(Student.class, 1l);
         //System.out.println(student.getExams());
         Query query = session.createQuery("from Student");
-        List<Student> students=query.getResultList();
+        List<Student> students=query.list();
         System.out.println(students);
+
+        List<ExamResult> results=Reports.getExamResults("John", "Snow", session);
+        System.out.println(results);
+
         transaction.commit();
 
         session.close();
